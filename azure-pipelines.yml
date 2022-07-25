@@ -46,8 +46,17 @@ steps:
   parameters:
     buildConfiguration: 'Release'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  condition: succeeded()
+- task: DotNetCoreCLI@2
+  displayName: Publish
   inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    arguments: '--configuration Release -o $(build.artifactstagingdirectory)'
     zipAfterPublish: false
+    modifyOutputPath: false
+ 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
