@@ -51,14 +51,13 @@ steps:
     command: custom
     custom: tool
     arguments: 'restore'
+ 
 
-- task: DotNetCoreCLI@2
-  displayName: 'Install report generator'
+- task: WhiteSource@21
   inputs:
-    command: custom
-    custom: tool
-    arguments: 'install -global dotnet-reportgenerator-globaltool'    
-
+    cwd: '$(System.DefaultWorkingDirectory)'
+    projectName: 'mend'
+    
 - task: DotNetCoreCLI@2
   displayName: 'Run unit tests - $(buildConfiguration)'
   inputs:
@@ -74,10 +73,6 @@ steps:
     custom: tool
     arguments: 'run reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines'
 
-- task: WhiteSource@21
-  inputs:
-    cwd: '$(System.DefaultWorkingDirectory)'
-    projectName: 'mend'
     
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
