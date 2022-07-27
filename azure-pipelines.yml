@@ -74,6 +74,11 @@ steps:
     custom: tool
     arguments: 'run reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines'
 
+- task: WhiteSource@21
+  inputs:
+    cwd: '$(System.DefaultWorkingDirectory)'
+    projectName: 'mend'
+    
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
   inputs:
